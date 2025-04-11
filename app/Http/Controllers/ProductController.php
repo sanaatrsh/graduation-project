@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::latest()->paginate(15);
-        return response()->json($products);
+        return ProductResource::collection($products);
     }
 
     public function show($id)
@@ -26,10 +27,14 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $product->addMediaFromRequest('image')->toMediaCollection('products');
+            $fullUrl = $product->getFirstMediaUrl('products');
+            $imagePath = str_replace(url('/'), '', $fullUrl);
         }
+
         return response()->json([
             'message' => 'Product created successfully',
-            'data' => $product
+            'image_url' => $product->getFirstMediaUrl('products'),
+            'data' => $product,
         ], 201);
     }
 
