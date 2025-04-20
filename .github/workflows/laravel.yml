@@ -1,13 +1,11 @@
-name: Laravel CI
+name: Test and Merge to Main
 
 on:
   push:
-    branches: [ main, dev ]
-  pull_request:
-    branches: [ main ]
+    branches: [ test ]
 
 jobs:
-  laravel-tests:
+  test-and-merge:
     runs-on: ubuntu-latest
 
     services:
@@ -38,10 +36,10 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Create .env file
+      - name: Copy .env
         run: cp .env.example .env
 
-      - name: Generate application key
+      - name: Generate key
         run: php artisan key:generate
 
       - name: Run migrations
@@ -49,3 +47,12 @@ jobs:
 
       - name: Run tests
         run: php artisan test
+
+      - name: Merge test into main
+        if: success()
+        run: |
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/merges \
+          -d '{"base":"main","head":"test"}'
