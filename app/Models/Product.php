@@ -12,11 +12,12 @@ class Product extends Model implements HasMedia
 
     protected $guarded;
 
-    public function orders(){
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
-
 }
