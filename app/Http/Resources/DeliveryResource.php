@@ -17,10 +17,9 @@ class DeliveryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
-            'event' => $this->event,
-            'color' => $this->color,
+            'phone_number' => $this->phone_number,
+            'method' => $this->method,
+            'salary' => $this->salary,
         ];
-
     }
 }

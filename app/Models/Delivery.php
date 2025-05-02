@@ -9,7 +9,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Delivery extends Model
 {
 
-    use InteractsWithMedia;
     protected $guarded;
 
     public function orders()

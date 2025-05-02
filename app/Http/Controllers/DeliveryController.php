@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeliveryRequest;
 use App\Http\Resources\DeliveryResource;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class DeliveryController extends Controller
     public function index()
     {
         $deliveries = Delivery::paginate(10);
-    return DeliveryResource::collection($deliveries);
+        return DeliveryResource::collection($deliveries);
     }
 
     /**
@@ -28,7 +29,7 @@ class DeliveryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DeliveryRequest $request)
     {
         $delivery = Delivery::create($request->validated());
 
@@ -47,18 +48,8 @@ class DeliveryController extends Controller
         return response()->json($delivery);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Delivery $delivery)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request,  $id)
+    public function update(DeliveryRequest $request,  $id)
     {
         $delivery = Delivery::findOrFail($id);
         $delivery->update($request->validated());
@@ -72,7 +63,7 @@ class DeliveryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
         $delivery = Delivery::findOrFail($id);
         $delivery->delete();
@@ -80,4 +71,5 @@ class DeliveryController extends Controller
         return response()->json([
             'message' => 'Delivery deleted successfully'
         ]);
-}}
+    }
+}
