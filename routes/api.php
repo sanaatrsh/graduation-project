@@ -38,6 +38,6 @@ Route::apiResource('carts', CartController::class);
 //payment
 Route::apiResource('payments', PaymentController::class);
 //flavor
-Route::apiResource('falvors', FlavorController::class);
+Route::apiResource('flavors', FlavorController::class);
 //delivery
 Route::apiResource('deliveries', DeliveryController::class);

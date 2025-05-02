@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FlavorRequest;
 use App\Http\Resources\FlavorResource;
 use App\Models\Flavor;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
 class FlavorController extends Controller
@@ -13,22 +15,11 @@ class FlavorController extends Controller
      */
     public function index()
     {
-        $flavors =Flavor::latest()->paginate(6);
+        $flavors = Flavor::latest()->paginate(6);
         return FlavorResource::collection($flavors);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(FlavorRequest $request)
     {
         $flavor = Flavor::create($request->validated());
 
@@ -47,18 +38,7 @@ class FlavorController extends Controller
         return response()->json($flavor);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Flavor $flavor)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request,$id)
+    public function update(FlavorRequest $request, $id)
     {
         $flavor = Flavor::findOrFail($id);
         $flavor->update($request->validated());
@@ -72,9 +52,9 @@ class FlavorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-         $flavor = Flavor::findOrFail($id);
+        $flavor = Flavor::findOrFail($id);
         $flavor->delete();
 
         return response()->json([

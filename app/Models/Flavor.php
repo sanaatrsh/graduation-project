@@ -8,7 +8,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Flavor extends Model
 {
-    use InteractsWithMedia;
     protected $guarded;
 
     public function category_flavors()
