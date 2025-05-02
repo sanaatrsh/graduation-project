@@ -30,7 +30,7 @@ Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
 
 //order
-Route::apiResource('oredrs', OrderController::class);
+Route::apiResource('orders', OrderController::class);
 //box
 Route::apiResource('boxes', BoxController::class);
 //cart

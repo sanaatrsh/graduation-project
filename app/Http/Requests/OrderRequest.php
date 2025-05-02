@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class OrderRrquest extends FormRequest
+class OrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class OrderRrquest extends FormRequest
             'product_id' => 'required|exists:products,id',
             'box_id' => 'required|exists:boxes,id',
             'delivery_id' => 'required|exists:deliveries,id',
-            'deliverd_by' => 'required|date',
+            'delivered_by' => 'required|date',
             'write_on_box' => 'nullable|string',
         ];
     }

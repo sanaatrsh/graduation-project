@@ -8,7 +8,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Order extends Model
 {
-    use InteractsWithMedia;
     protected $guarded;
 
     public function delivery()
