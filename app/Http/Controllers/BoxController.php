@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BoxRequest;
 use App\Http\Resources\BoxResource;
 use App\Models\Box;
 use Illuminate\Http\Request;
@@ -18,17 +19,9 @@ class BoxController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BoxRequest $request)
     {
         $box = Box::create($request->validated());
 
@@ -43,24 +36,12 @@ class BoxController extends Controller
      */
     public function show($id)
     {
-        $box = Box::with(['user', 'order'])->findOrFail($id);
+        $box = Box::findOrFail($id);
 
         return response()->json($box);
-
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Box $box)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
+    public function update(BoxRequest $request, $id)
     {
         $box = Box::findOrFail($id);
         $box->update($request->validated());
@@ -71,10 +52,8 @@ class BoxController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy( $id)
+
+    public function destroy($id)
     {
         $box = Box::findOrFail($id);
         $box->delete();

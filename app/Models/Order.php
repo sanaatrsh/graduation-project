@@ -9,18 +9,22 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Order extends Model
 {
     use InteractsWithMedia;
-    public function delivery(){
+    protected $guarded;
+
+    public function delivery()
+    {
         return $this->belongsTo(Delivery::class);
     }
-    public function box(){
+    public function box()
+    {
         return $this->belongsTo(box::class);
     }
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
-    public function carts(){
+    public function carts()
+    {
         return $this->hasMany(Cart::class);
     }
-
-
 }
