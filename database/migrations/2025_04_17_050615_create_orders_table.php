@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('box_id')->constrained('boxes')->cascadeOnDelete();
             $table->foreignId('delivery_id')->constrained('deliveries')->cascadeOnDelete();
-            $table->foreignId('quantity_id')->constrained('Quantities')->cascadeOnDelete();
+            $table->foreignId('quantity_id')->constrained('quantities')->cascadeOnDelete();
             $table->date('delivered_by');
             $table->string('write_on_box');
             $table->timestamps();
