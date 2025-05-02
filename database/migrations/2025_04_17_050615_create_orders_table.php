@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->foreignId('box_id')->constrained('boxes')->cascadeOnDelete();
             $table->foreignId('delivery_id')->constrained('deliveries')->cascadeOnDelete();
+            $table->foreignId('quantity_id')->constrained('Quantities')->cascadeOnDelete();
             $table->date('delivered_by');
             $table->string('write_on_box');
             $table->timestamps();
