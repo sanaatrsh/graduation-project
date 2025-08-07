@@ -21,6 +21,7 @@ class ProductResource extends JsonResource
             'brand'       => $this->brand?->name,
             'price'       => $this->price,
             'description' => $this->description,
+            'trending' => $this->trending,
             'image_url'   => str_replace(url('/'), '', $this->getFirstMediaUrl('products')),
             'created_at'  => $this->created_at,
             'updated_at'  => $this->updated_at,

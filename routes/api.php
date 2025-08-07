@@ -27,17 +27,19 @@ Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanct
 Route::apiResource('categories', CategoryController::class);
 
 //product
-Route::apiResource('products', ProductController::class);
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/{id}', [ProductController::class, 'show']);
+    Route::post('/create', [ProductController::class, 'create']);
+    Route::post('/{id}', [ProductController::class, 'update']);
+    Route::delete('/{id}', [ProductController::class, 'destroy']);
+});
 
 //order
 Route::apiResource('orders', OrderController::class);
 //box
 Route::apiResource('boxes', BoxController::class);
-//cart
-Route::apiResource('carts', CartController::class);
 //payment
 Route::apiResource('payments', PaymentController::class);
-//flavor
-Route::apiResource('flavors', FlavorController::class);
 //delivery
 Route::apiResource('deliveries', DeliveryController::class);

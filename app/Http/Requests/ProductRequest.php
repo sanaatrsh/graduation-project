@@ -26,6 +26,7 @@ class ProductRequest extends FormRequest
             'category_id' => 'required|exists:categories,id|max:255',
             'brand_id' => 'required|exists:brands,id|max:255',
             'description' => 'nullable',
+            'trending' => 'nullable|boolean',
             'price' => 'required|numeric',
             'image' => 'required|file|mimes:png,jpg',
         ];
