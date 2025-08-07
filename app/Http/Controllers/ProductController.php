@@ -14,6 +14,12 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
+    public function trendingIndex()
+    {
+        $products = Product::where('trending', 1)->with(['category', 'brand'])->latest()->paginate(15);
+        return ProductResource::collection($products);
+    }
+
     public function show($id)
     {
         $product = Product::with(['category', 'brand'])->findOrFail($id);

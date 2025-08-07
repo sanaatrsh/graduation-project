@@ -29,6 +29,7 @@ Route::apiResource('categories', CategoryController::class);
 //product
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index']);
+    Route::get('/trending', [ProductController::class, 'trendingIndex']);
     Route::get('/{id}', [ProductController::class, 'show']);
     Route::post('/create', [ProductController::class, 'create']);
     Route::post('/{id}', [ProductController::class, 'update']);

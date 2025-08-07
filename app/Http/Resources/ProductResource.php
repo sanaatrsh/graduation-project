@@ -23,8 +23,8 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'trending' => $this->trending,
             'image_url'   => str_replace(url('/'), '', $this->getFirstMediaUrl('products')),
-            'created_at'  => $this->created_at,
-            'updated_at'  => $this->updated_at,
+            // 'created_at'  => $this->created_at,
+            // 'updated_at'  => $this->updated_at,
         ];
     }
 }
