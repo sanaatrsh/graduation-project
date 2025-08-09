@@ -4,13 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index()
     {
         $products = Product::with(['category', 'brand'])->latest()->paginate(15);
+        return ProductResource::collection($products);
+    }
+
+    public function productByCategory(Request $request)
+    {
+        $id = $request->id;
+        $category = Category::findOrFail($id);
+        $products = Product::where('category_id', $category->id)->latest()->paginate(10);
         return ProductResource::collection($products);
     }
 
