@@ -81,9 +81,11 @@ class ProductController extends Controller
                 ]
             );
         } else {
-            // $product->offer()?->delete();
+            $product->offer()?->delete();
         }
-
+        if ($request->hasFile('image')) {
+            $product->addMediaFromRequest('image')->toMediaCollection('products');
+        }
         $product->load(['category', 'brand', 'offers']);
 
         return response()->json([
