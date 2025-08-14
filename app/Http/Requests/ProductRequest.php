@@ -29,6 +29,11 @@ class ProductRequest extends FormRequest
             'trending' => 'nullable|boolean',
             'price' => 'required|numeric',
             'image' => 'required|file|mimes:png,jpg',
+
+            //offer
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'start_date' => 'nullable|date|after_or_equal:today',
+            'end_date' => 'nullable|date|after:start_date',
         ];
     }
 }

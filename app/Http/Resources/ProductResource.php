@@ -22,6 +22,7 @@ class ProductResource extends JsonResource
             'price'       => $this->price,
             'description' => $this->description,
             'trending' => $this->trending,
+            'offers' => OfferResource::collection($this->whenLoaded('offers')),
             'image_url'   => str_replace(url('/'), '', $this->getFirstMediaUrl('products')),
             // 'created_at'  => $this->created_at,
             // 'updated_at'  => $this->updated_at,

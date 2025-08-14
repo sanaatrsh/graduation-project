@@ -38,7 +38,7 @@ class ProductController extends Controller
 
     public function create(ProductRequest $request)
     {
-        $data = collect($request->validated())->except('image')->toArray();
+        $data = collect($request->validated())->except(['image', 'discount_percentage', 'start_date', 'end_date'])->toArray();
 
         $product = Product::create($data);
 
@@ -46,7 +46,15 @@ class ProductController extends Controller
             $product->addMediaFromRequest('image')->toMediaCollection('products');
         }
 
-        $product->load(['category', 'brand']);
+        if ($request->filled('discount_percentage') && $request->filled('start_date') && $request->filled('end_date')) {
+            $product->offers()->create([
+                'discount_percentage' => $request->discount_percentage,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+            ]);
+        }
+
+        $product->load(['category', 'brand', 'offers']);
 
         return response()->json([
             'message' => 'Product created successfully',
@@ -58,17 +66,32 @@ class ProductController extends Controller
     public function update(ProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
-        $data = collect($request->validated())->except('image')->toArray();
+
+        $data = collect($request->validated())->except(['image', 'discount_percentage', 'start_date', 'end_date'])->toArray();
 
         $product->update($data);
 
-        $product->load(['category', 'brand']);
+        if ($request->filled('discount_percentage') && $request->filled('start_date') && $request->filled('end_date')) {
+            $product->offers()->updateOrCreate(
+                [],
+                [
+                    'discount_percentage' => $request->discount_percentage,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                ]
+            );
+        } else {
+            // $product->offer()?->delete();
+        }
+
+        $product->load(['category', 'brand', 'offers']);
 
         return response()->json([
             'message' => 'Product updated successfully',
             'data' => new ProductResource($product),
         ]);
     }
+
 
     public function destroy($id)
     {
