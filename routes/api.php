@@ -32,8 +32,8 @@ Route::prefix('products')->group(function () {
     Route::get('/trending', [ProductController::class, 'trendingIndex']);
     Route::get('/category', [ProductController::class, 'productByCategory']);
     Route::get('/{id}', [ProductController::class, 'show']);
-    Route::post('/store', [ProductController::class, 'create']);
-    Route::post('/edit/{id}', [ProductController::class, 'update']);
+    Route::post('/', [ProductController::class, 'create']);
+    Route::post('/{id}', [ProductController::class, 'update']);
     Route::delete('/{id}', [ProductController::class, 'destroy']);
 });
 
