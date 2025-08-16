@@ -28,7 +28,8 @@ class ProductRequest extends FormRequest
             'description' => 'nullable',
             'trending' => 'nullable|boolean',
             'price' => 'required|numeric',
-            'image' => 'required|file|mimes:png,jpg',
+            'images' => 'required|array',
+            'images.*' => 'file|mimes:png,jpg,jpeg',
 
             //offer
             'discount_percentage' => 'nullable|numeric|min:0|max:100',

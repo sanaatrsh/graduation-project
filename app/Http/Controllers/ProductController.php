@@ -38,12 +38,14 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $data = collect($request->validated())->except(['image', 'discount_percentage', 'start_date', 'end_date'])->toArray();
+        $data = collect($request->validated())->except(['images', 'discount_percentage', 'start_date', 'end_date'])->toArray();
 
         $product = Product::create($data);
 
-        if ($request->hasFile('image')) {
-            $product->addMediaFromRequest('image')->toMediaCollection('products');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $product->addMedia($image)->toMediaCollection('products');
+            }
         }
 
         if ($request->filled('discount_percentage') && $request->filled('start_date') && $request->filled('end_date')) {
@@ -67,7 +69,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $data = collect($request->validated())->except(['image', 'discount_percentage', 'start_date', 'end_date'])->toArray();
+        $data = collect($request->validated())->except(['images', 'discount_percentage', 'start_date', 'end_date'])->toArray();
 
         $product->update($data);
 
@@ -83,9 +85,12 @@ class ProductController extends Controller
         } else {
             $product->offer()?->delete();
         }
-        if ($request->hasFile('image')) {
-            $product->addMediaFromRequest('image')->toMediaCollection('products');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $product->addMedia($image)->toMediaCollection('products');
+            }
         }
+
         $product->load(['category', 'brand', 'offers']);
 
         return response()->json([
