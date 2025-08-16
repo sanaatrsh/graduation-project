@@ -28,13 +28,13 @@ Route::apiResource('categories', CategoryController::class);
 
 //product
 Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/all', [ProductController::class, 'index']);
     Route::get('/trending', [ProductController::class, 'trendingIndex']);
     Route::get('/category', [ProductController::class, 'productByCategory']);
     Route::get('/{id}', [ProductController::class, 'show']);
     Route::post('/', [ProductController::class, 'create']);
     Route::post('/{id}', [ProductController::class, 'update']);
-    Route::delete('/{id}', [ProductController::class, 'destroy']);
+    Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
 });
 
 //order
