@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BoxController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DeliveryController;
@@ -26,14 +27,11 @@ Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanct
 //category
 Route::apiResource('categories', CategoryController::class);
 
+//Brands
+Route::apiResource('brands', BrandController::class);
+
 //product
 Route::prefix('products')->group(function () {
-    // Route::get('/all', [ProductController::class, 'index']);
-    // Route::get('/{id}', [ProductController::class, 'show']);
-    // Route::any('/', [ProductController::class, 'create']);
-    // Route::any('/{id}', [ProductController::class, 'update']);
-    // Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
-
     Route::resource('/', ProductController::class)
         ->parameters(['' => 'id'])
         ->only(['index', 'store', 'show', 'destroy']);

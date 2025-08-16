@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->decimal('discount_percentage', 5, 2);
             $table->dateTime('start_date');
             $table->dateTime('end_date');
