@@ -28,13 +28,19 @@ Route::apiResource('categories', CategoryController::class);
 
 //product
 Route::prefix('products')->group(function () {
-    Route::get('/all', [ProductController::class, 'index']);
+    // Route::get('/all', [ProductController::class, 'index']);
+    // Route::get('/{id}', [ProductController::class, 'show']);
+    // Route::any('/', [ProductController::class, 'create']);
+    // Route::any('/{id}', [ProductController::class, 'update']);
+    // Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
+
+    Route::resource('/', ProductController::class)
+        ->parameters(['' => 'id'])
+        ->only(['index', 'store', 'show', 'destroy']);
+
+    Route::post('/{id}/update', [ProductController::class, 'update']);
     Route::get('/trending', [ProductController::class, 'trendingIndex']);
     Route::get('/category', [ProductController::class, 'productByCategory']);
-    Route::get('/{id}', [ProductController::class, 'show']);
-    Route::any('/', [ProductController::class, 'create']);
-    Route::any('/{id}', [ProductController::class, 'update']);
-    Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
 });
 
 //order

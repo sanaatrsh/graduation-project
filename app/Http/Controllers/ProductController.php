@@ -36,7 +36,7 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
-    public function create(ProductRequest $request)
+    public function store(ProductRequest $request)
     {
         $data = collect($request->validated())->except(['image', 'discount_percentage', 'start_date', 'end_date'])->toArray();
 
