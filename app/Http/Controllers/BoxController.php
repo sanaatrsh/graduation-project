@@ -14,9 +14,17 @@ class BoxController extends Controller
      */
     public function index()
     {
-        $boxes = Box::latest()->paginate(15);
+        $event = request()->get('event');
+
+        $boxes = Box::when($event, function ($q) use ($event) {
+            $q->where('event', $event);
+        })
+            ->latest()
+            ->paginate(15);
+
         return BoxResource::collection($boxes);
     }
+
 
     /**
      * Store a newly created resource in storage.
