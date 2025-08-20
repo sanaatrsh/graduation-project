@@ -12,9 +12,18 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['category', 'brand'])->latest()->paginate(15);
+        $query = request()->get('query');
+
+        $products = Product::with(['category', 'brand'])
+            ->when($query, function ($q) use ($query) {
+                $q->where('name', $query);
+            })
+            ->latest()
+            ->paginate(15);
+
         return ProductResource::collection($products);
     }
+
 
     public function productByCategory(Request $request)
     {
