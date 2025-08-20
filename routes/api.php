@@ -34,7 +34,8 @@ Route::apiResource('brands', BrandController::class);
 Route::prefix('products')->group(function () {
     Route::resource('/', ProductController::class)
         ->parameters(['' => 'id'])
-        ->only(['index', 'store', 'show', 'destroy']);
+        ->only(['index', 'show', 'destroy']);
+    Route::post('/store', [ProductController::class, 'store']);
 
     Route::post('/{id}/update', [ProductController::class, 'update']);
     Route::get('/trending', [ProductController::class, 'trendingIndex']);
@@ -44,7 +45,9 @@ Route::prefix('products')->group(function () {
 //order
 Route::apiResource('orders', OrderController::class);
 //box
-Route::apiResource('boxes', BoxController::class);
+Route::apiResource('boxes', BoxController::class)->except('update');
+Route::post('/boxes/{id}/update', [BoxController::class, 'update']);
+
 //payment
 Route::apiResource('payments', PaymentController::class);
 //delivery

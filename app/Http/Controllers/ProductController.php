@@ -103,8 +103,8 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
-        $product->clearMediaCollection('products');
         $product->delete();
+        $product->clearMediaCollection('products');
 
         return response()->json([
             'message' => 'Product deleted successfully'

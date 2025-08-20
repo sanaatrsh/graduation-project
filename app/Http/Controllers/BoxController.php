@@ -14,7 +14,7 @@ class BoxController extends Controller
      */
     public function index()
     {
-        $boxes = Box::paginate(10);
+        $boxes = Box::latest()->paginate(15);
         return BoxResource::collection($boxes);
     }
 
@@ -23,11 +23,19 @@ class BoxController extends Controller
      */
     public function store(BoxRequest $request)
     {
-        $box = Box::create($request->validated());
+        $data = collect($request->validated())->except(['images'])->toArray();
+
+        $box = box::create($data);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $box->addMedia($image)->toMediaCollection('boxs');
+            }
+        }
 
         return response()->json([
             'message' => 'Box created successfully',
-            'data' => $box
+            'data' => new BoxResource($box),
         ], 201);
     }
 
@@ -38,17 +46,23 @@ class BoxController extends Controller
     {
         $box = Box::findOrFail($id);
 
-        return response()->json($box);
+        return new BoxResource($box);
     }
 
     public function update(BoxRequest $request, $id)
     {
         $box = Box::findOrFail($id);
-        $box->update($request->validated());
+        $data = collect($request->validated())->except(['images'])->toArray();
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $box->addMedia($image)->toMediaCollection('boxs');
+            }
+        }
 
+        $box->update($data);
         return response()->json([
             'message' => 'Box updated successfully',
-            'data' => $box
+            'data' => new BoxResource($box),
         ]);
     }
 
@@ -57,6 +71,7 @@ class BoxController extends Controller
     {
         $box = Box::findOrFail($id);
         $box->delete();
+        $box->clearMediaCollection('boxs');
 
         return response()->json([
             'message' => 'Box deleted successfully'
