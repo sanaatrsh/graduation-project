@@ -19,7 +19,6 @@ class BoxResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'event' => $this->event,
-            'color' => $this->color,
             'price' => $this->price,
             'image_urls' => $this->getMedia('boxs')->map(function ($media) {
                 return str_replace(url('/'), '', $media->getUrl());

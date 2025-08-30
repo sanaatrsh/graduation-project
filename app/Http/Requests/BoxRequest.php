@@ -25,8 +25,6 @@ class BoxRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
             'event' => 'required|string|max:100',
-            'color' => 'required|string|max:100',
-
             'price' => 'required|numeric',
             'images' => 'nullable|array',
             'images.*' => 'file|mimes:png,jpg,jpeg',
