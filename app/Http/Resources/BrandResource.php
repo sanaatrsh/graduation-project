@@ -17,6 +17,7 @@ class BrandResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'image_urls' => $this->getMedia('brands')->map(fn($media) => url($media->getUrl())),
         ];
     }
 }

@@ -23,6 +23,7 @@ class BrandRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|unique:brands,name,' . $this->brand,
+            'image' => 'nullable|file|mimes:png,jpg,jpeg',
         ];
     }
 }

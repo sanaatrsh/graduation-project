@@ -16,7 +16,11 @@ class BrandController extends Controller
 
     public function store(BrandRequest $request)
     {
-        $brand = Brand::create($request->validated());
+        $data = collect($request->validated())->except(['image'])->toArray();
+        $brand = Brand::create($data);
+        if ($request->hasFile('image')) {
+            $brand->addMedia($request->file('image'))->toMediaCollection('brands');
+        }
         return new BrandResource($brand);
     }
 
@@ -29,6 +33,9 @@ class BrandController extends Controller
     {
         $brand = Brand::findOrFail($id);
         $brand->update($request->validated());
+        if ($request->hasFile('image')) {
+            $brand->addMedia($request->file('image'))->toMediaCollection('brands');
+        }
         return new BrandResource($brand);
     }
 
