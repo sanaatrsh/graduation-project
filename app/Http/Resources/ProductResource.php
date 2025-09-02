@@ -14,6 +14,8 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+
         return [
             'id'          => $this->id,
             'name'        => $this->name,
@@ -21,13 +23,16 @@ class ProductResource extends JsonResource
             'brand'       => $this->brand?->name,
             'price'       => $this->price,
             'description' => $this->description,
-            'trending' => $this->trending,
-            'offers' => OfferResource::collection($this->whenLoaded('offers')),
-            'image_urls' => $this->getMedia('products')->map(function ($media) {
+            'trending'    => $this->trending,
+            'offers' => OfferResource::collection(
+                $this->whenLoaded('offers')
+            )->map(function ($offer) {
+                $offer->product_price = $this->price;
+                return $offer;
+            }),
+            'image_urls'  => $this->getMedia('products')->map(function ($media) {
                 return url($media->getUrl());
             }),
-            // 'created_at'  => $this->created_at,
-            // 'updated_at'  => $this->updated_at,
         ];
     }
 }

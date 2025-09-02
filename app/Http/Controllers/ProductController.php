@@ -35,13 +35,13 @@ class ProductController extends Controller
 
     public function trendingIndex()
     {
-        $products = Product::where('trending', 1)->with(['category', 'brand'])->latest()->paginate(15);
+        $products = Product::where('trending', 1)->with(['category', 'brand', 'offers'])->latest()->paginate(15);
         return ProductResource::collection($products);
     }
 
     public function show($id)
     {
-        $product = Product::with(['category', 'brand'])->findOrFail($id);
+        $product = Product::with(['category', 'brand', 'offers'])->findOrFail($id);
         return new ProductResource($product);
     }
 
