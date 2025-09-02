@@ -39,7 +39,8 @@ Route::prefix('products')->group(function () {
 
     Route::post('/{id}/update', [ProductController::class, 'update']);
     Route::get('/index/trending', [ProductController::class, 'trendingIndex']);
-    Route::get('/category', [ProductController::class, 'productByCategory']);
+    Route::get('/filter/category', [ProductController::class, 'productByCategory']);
+    Route::get('/filter/brand', [ProductController::class, 'productByBrand']);
 });
 
 //order

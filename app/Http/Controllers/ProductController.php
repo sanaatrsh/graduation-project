@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class ProductController extends Controller
     {
         $query = request()->get('query');
 
-        $products = Product::with(['category', 'brand'])
+        $products = Product::with(['category', 'brand', 'offer'])
             ->when($query, function ($q) use ($query) {
                 $q->where('name', $query);
             })
@@ -29,7 +30,15 @@ class ProductController extends Controller
     {
         $id = $request->id;
         $category = Category::findOrFail($id);
-        $products = Product::where('category_id', $category->id)->latest()->paginate(10);
+        $products = Product::with('category', 'brand', 'offers')->where('category_id', $category->id)->latest()->paginate(10);
+        return ProductResource::collection($products);
+    }
+
+    public function productByBrand(Request $request)
+    {
+        $id = $request->id;
+        $brand = Brand::findOrFail($id);
+        $products = Product::with('category', 'brand', 'offers')->where('brand_id', $brand->id)->latest()->paginate(10);
         return ProductResource::collection($products);
     }
 
