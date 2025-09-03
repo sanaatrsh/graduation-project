@@ -15,7 +15,7 @@ class ProductController extends Controller
     {
         $query = request()->get('query');
 
-        $products = Product::with(['category', 'brand', 'offer'])
+        $products = Product::with(['category', 'brand', 'offers'])
             ->when($query, function ($q) use ($query) {
                 $q->where('name', $query);
             })
@@ -101,7 +101,7 @@ class ProductController extends Controller
                 ]
             );
         } else {
-            $product->offer()?->delete();
+            $product->offers()?->delete();
         }
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
