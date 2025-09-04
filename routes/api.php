@@ -15,15 +15,13 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 //auth
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('user/block/{id}', [UserController::class, 'block']);
+Route::get('users', [UserController::class, 'index']);
 
 //category
 Route::apiResource('categories', CategoryController::class);
