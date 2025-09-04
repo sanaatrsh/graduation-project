@@ -31,6 +31,7 @@ class UserController extends Controller
             'token' => $token
         ], 200);
     }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -43,6 +44,12 @@ class UserController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'Invalid credentials'
+            ], 401);
+        }
+
+        if ($user->blocked == 1) {
+            return response()->json([
+                'message' => 'user is blocked'
             ], 401);
         }
 
@@ -61,6 +68,21 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Logged out successfully'
         ], 200);
+    }
+
+    public function block($id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->blocked = !$user->blocked;
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => $user->blocked
+                ? 'user is blocked'
+                : 'user is unblocked'
+        ]);
     }
 
     public function index()

@@ -23,6 +23,7 @@ Route::get('/user', function (Request $request) {
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('user/block/{id}', [UserController::class, 'block']);
 
 //category
 Route::apiResource('categories', CategoryController::class);
