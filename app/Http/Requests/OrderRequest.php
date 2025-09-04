@@ -22,9 +22,9 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'delivered_by' => 'required|date',
-            'price' => 'required|numeric|min:0',
+            'status' => 'nullable|in:pending,cancelled,done,delivered',
+            'price' => 'nullable|numeric|min:0',
             'address' => 'required|string|max:255',
         ];
     }

@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $orders = Order::with(['user', 'quantities.product', 'quantities.box'])
@@ -31,7 +28,6 @@ class OrderController extends Controller
 
         return new OrderResource($order->load(['user', 'quantities.product', 'quantities.box']));
     }
-
 
     public function show($id)
     {
@@ -95,6 +91,44 @@ class OrderController extends Controller
             'message'  => 'Product added and price updated',
             'order'    => new OrderResource($order->load(['quantities.product'])),
             'quantity' => new QuantityResource($quantity->load(['product'])),
+        ]);
+    }
+
+    public function sendOrder(Request $request)
+    {
+        $request->validate([
+            'address'      => 'required|string|max:255',
+            'delivered_by' => 'required|date|after:today',
+        ]);
+
+        $user = 1;
+
+        $order = Order::where('user_id', $user)
+            ->where('status', 'pending')
+            ->with('quantities')
+            ->first();
+
+        if (!$order) {
+            return response()->json([
+                'message' => 'There is no request being created to send.'
+            ], 404);
+        }
+
+        if ($order->quantities->isEmpty()) {
+            return response()->json([
+                'message' => 'You cannot send an empty order without products.'
+            ], 400);
+        }
+
+        $order->update([
+            'address'      => $request->address,
+            'delivered_by' => $request->delivered_by,
+            'status'       => 'done',
+        ]);
+
+        return response()->json([
+            'message' => 'The request has been sent successfully.',
+            'order'   => new OrderResource($order->load(['quantities.product', 'quantities.box'])),
         ]);
     }
 }

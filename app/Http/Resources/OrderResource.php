@@ -21,11 +21,10 @@ class OrderResource extends JsonResource
             'price' => $this->price,
             'address' => $this->address,
             'status' => $this->status,
+            'created_at' => $this->created_at,
             'quantities'  => QuantityResource::collection(
                 $this->whenLoaded('quantities', $this->quantities)
             ),
-
-            'created_at' => $this->created_at,
         ];
     }
 }
