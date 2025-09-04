@@ -44,7 +44,8 @@ Route::prefix('products')->group(function () {
 
 //order
 Route::apiResource('orders', OrderController::class);
-Route::post('orders/add-to-cart', [OrderController::class, 'addProductToOrder']);
+Route::post('orders/add-product-to-cart', [OrderController::class, 'addProductToOrder']);
+Route::post('orders/add-box-to-cart', [OrderController::class, 'addBoxToOrder']);
 Route::post('orders/send', [OrderController::class, 'sendOrder']);
 
 //box

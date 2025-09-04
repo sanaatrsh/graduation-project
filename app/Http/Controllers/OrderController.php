@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\QuantityResource;
+use App\Models\Box;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Quantity;
@@ -91,6 +92,45 @@ class OrderController extends Controller
             'message'  => 'Product added and price updated',
             'order'    => new OrderResource($order->load(['quantities.product'])),
             'quantity' => new QuantityResource($quantity->load(['product'])),
+        ]);
+    }
+
+    public function addBoxToOrder(Request $request)
+    {
+        $request->validate([
+            'box_id' => 'required|exists:boxes,id',
+            'quantity'   => 'required|integer|min:1',
+        ]);
+
+        $user = 1;
+
+        $order = Order::where('user_id', $user)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$order) {
+            $order = Order::create([
+                'user_id' => $user,
+                'status'  => 'pending',
+                'price'   => 0,
+            ]);
+        }
+
+        $box = Box::findOrFail($request->box_id);
+        $totalPrice = $box->price * $request->quantity;
+
+        $quantity = Quantity::create([
+            'box_id' => $request->box_id,
+            'order_id'   => $order->id,
+            'quantity'   => $request->quantity,
+        ]);
+
+        $order->increment('price', $totalPrice);
+
+        return response()->json([
+            'message'  => 'box added and price updated',
+            'order'    => new OrderResource($order->load(['quantities.box'])),
+            'quantity' => new QuantityResource($quantity->load(['box'])),
         ]);
     }
 
