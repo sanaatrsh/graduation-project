@@ -16,12 +16,16 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'product' => new ProductResource($this->whenLoaded('product')),
-            'box' => new BoxResource($this->whenLoaded('box')),
-            'delivery' => new DeliveryResource($this->whenLoaded('delivery')),
+            'user' => new UserResource($this->whenLoaded('user')),
             'delivered_by' => $this->delivered_by,
-            'write_on_box' => $this->write_on_box,
-        ];
+            'price' => $this->price,
+            'address' => $this->address,
+            'status' => $this->status,
+            'quantities'  => QuantityResource::collection(
+                $this->whenLoaded('quantities', $this->quantities)
+            ),
 
+            'created_at' => $this->created_at,
+        ];
     }
 }

@@ -24,12 +24,15 @@ class ProductResource extends JsonResource
             'price'       => $this->price,
             'description' => $this->description,
             'trending'    => $this->trending,
-            'offers' => OfferResource::collection(
-                $this->whenLoaded('offers')
-            )->map(function ($offer) {
-                $offer->product_price = $this->price;
-                return $offer;
+
+            'offers' => $this->whenLoaded('offers', function () {
+                return $this->offers->map(function ($offer) {
+                    $offer->product_price = $this->price;
+                    return new OfferResource($offer);
+                });
             }),
+
+
             'image_urls'  => $this->getMedia('products')->map(function ($media) {
                 return url($media->getUrl());
             }),

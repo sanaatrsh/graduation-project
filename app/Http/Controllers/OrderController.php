@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\QuantityResource;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Quantity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -14,22 +18,27 @@ class OrderController extends Controller
      */
     public function index()
     {
+        $orders = Order::with(['user', 'quantities.product', 'quantities.box'])
+            ->latest()
+            ->paginate(10);
 
-        $orders = Order::with(['product', 'delivery', 'box'])->latest()->paginate(10);
         return OrderResource::collection($orders);
     }
 
     public function store(OrderRequest $request)
     {
         $order = Order::create($request->validated());
-        return response()->json($order, 201);
+
+        return new OrderResource($order->load(['user', 'quantities.product', 'quantities.box']));
     }
+
 
     public function show($id)
     {
+        $order = Order::with(['user', 'quantities.product', 'quantities.box'])
+            ->findOrFail($id);
 
-        $order = Order::with(['product', 'box', 'delivery'])->findOrFail($id);
-        return response()->json($order);
+        return new OrderResource($order);
     }
 
     public function update(OrderRequest $request, $id)
@@ -37,10 +46,7 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         $order->update($request->validated());
 
-        return response()->json([
-            'message' => 'order updated successfully',
-            'data' => $order
-        ]);
+        return new OrderResource($order->load(['user', 'quantities.product', 'quantities.box']));
     }
 
     public function destroy($id)
@@ -51,5 +57,36 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'order deleted successfully'
         ]);
+    }
+
+    public function addProductToOrder(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity'   => 'required|integer|min:1',
+        ]);
+
+        // $user = Auth::user()->id;
+
+        $user = 1;
+
+        $order = Order::where('user_id', $user)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$order) {
+            $order = Order::create([
+                'user_id' => $user,
+                'status'  => 'pending',
+            ]);
+        }
+
+        $quantity =  Quantity::create([
+            'product_id' => $request->product_id,
+            'order_id'   => $order->id,
+            'quantity'   => $request->quantity,
+        ]);
+
+        return new QuantityResource($quantity->load(['product']));
     }
 }

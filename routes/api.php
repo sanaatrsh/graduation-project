@@ -44,6 +44,7 @@ Route::prefix('products')->group(function () {
 
 //order
 Route::apiResource('orders', OrderController::class);
+Route::post('orders/add-to-cart', [OrderController::class, 'addProductToOrder']);
 
 //box
 Route::apiResource('boxes', BoxController::class)->except('update');
