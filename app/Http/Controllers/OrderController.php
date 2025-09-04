@@ -66,8 +66,6 @@ class OrderController extends Controller
             'quantity'   => 'required|integer|min:1',
         ]);
 
-        // $user = Auth::user()->id;
-
         $user = 1;
 
         $order = Order::where('user_id', $user)
@@ -78,15 +76,25 @@ class OrderController extends Controller
             $order = Order::create([
                 'user_id' => $user,
                 'status'  => 'pending',
+                'price'   => 0,
             ]);
         }
 
-        $quantity =  Quantity::create([
+        $product = Product::findOrFail($request->product_id);
+        $totalPrice = $product->price * $request->quantity;
+
+        $quantity = Quantity::create([
             'product_id' => $request->product_id,
             'order_id'   => $order->id,
             'quantity'   => $request->quantity,
         ]);
 
-        return new QuantityResource($quantity->load(['product']));
+        $order->increment('price', $totalPrice);
+
+        return response()->json([
+            'message'  => 'Product added and price updated',
+            'order'    => new OrderResource($order->load(['quantities.product'])),
+            'quantity' => new QuantityResource($quantity->load(['product'])),
+        ]);
     }
 }
