@@ -30,13 +30,24 @@ class OrderController extends Controller
         return new OrderResource($order->load(['user', 'quantities.product', 'quantities.box']));
     }
 
-    public function show($id)
+    public function show()
     {
-        $order = Order::with(['user', 'quantities.product', 'quantities.box'])
-            ->findOrFail($id);
+        $user = Auth::id();
 
-        return new OrderResource($order);
+        $order = Order::with(['user', 'quantities.product', 'quantities.box'])
+            ->where('user_id', $user)
+            ->where('status', 'pending')
+            ->first();
+
+        if ($order) {
+            return new OrderResource($order);
+        }
+
+        return response()->json([
+            'message' => 'There is no active order at the moment.'
+        ], 404);
     }
+
 
     public function update(OrderRequest $request, $id)
     {
@@ -63,7 +74,7 @@ class OrderController extends Controller
             'quantity'   => 'required|integer|min:1',
         ]);
 
-        $user = 1;
+        $user = Auth::id();
 
         $order = Order::where('user_id', $user)
             ->where('status', 'pending')
@@ -102,7 +113,7 @@ class OrderController extends Controller
             'quantity'   => 'required|integer|min:1',
         ]);
 
-        $user = 1;
+        $user = Auth::id();
 
         $order = Order::where('user_id', $user)
             ->where('status', 'pending')
