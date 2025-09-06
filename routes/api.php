@@ -44,7 +44,7 @@ Route::prefix('products')->group(function () {
 
 //order
 Route::middleware('auth:sanctum')->prefix('orders')->group(function () {
-    Route::apiResource('/', OrderController::class)->except(['show']);
+    Route::apiResource('/', OrderController::class)->parameters(['' => 'id'])->except(['show']);
     Route::get('/user', [OrderController::class, 'show']);
     Route::post('/add-product-to-cart', [OrderController::class, 'addProductToOrder']);
     Route::post('/add-box-to-cart', [OrderController::class, 'addBoxToOrder']);
@@ -55,8 +55,3 @@ Route::middleware('auth:sanctum')->prefix('orders')->group(function () {
 //box
 Route::apiResource('boxes', BoxController::class)->except('update');
 Route::post('/boxes/{id}/update', [BoxController::class, 'update']);
-
-//payment
-Route::apiResource('payments', PaymentController::class);
-//delivery
-Route::apiResource('deliveries', DeliveryController::class);

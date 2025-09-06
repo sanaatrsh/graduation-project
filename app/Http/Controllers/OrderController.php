@@ -152,7 +152,7 @@ class OrderController extends Controller
             'delivered_by' => 'required|date|after:today',
         ]);
 
-        $user = 1;
+        $user = Auth::id();
 
         $order = Order::where('user_id', $user)
             ->where('status', 'pending')
