@@ -29,7 +29,7 @@ class ProductRequest extends FormRequest
             'trending' => 'nullable|boolean',
             'price' => 'required|numeric',
             'images' => 'required|array',
-            'images.*' => 'file|mimes:png,jpg,jpeg',
+            'images.*' => 'file|mimes:png,jpg,jpeg|max:1024',
 
             //offer
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
