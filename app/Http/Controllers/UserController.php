@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -61,6 +62,36 @@ class UserController extends Controller
             'user' => $user,
             'token' => $token
         ], 200);
+    }
+
+
+    public function adminLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'Invalid email or password'
+            ], 401);
+        }
+
+        $user = Auth::user();
+
+        if (!$user->type == 'admin') {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $token = $user->createToken('auth_token', ['admin'])->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user'  => $user
+        ]);
     }
 
     public function logout(Request $request)

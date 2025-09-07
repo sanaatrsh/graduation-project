@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 //auth
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
+Route::post('admin-login', [UserController::class, 'adminLogin']);
 Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('user/block/{id}', [UserController::class, 'block']);
 Route::get('users', [UserController::class, 'index']);
@@ -50,7 +51,6 @@ Route::middleware('auth:sanctum')->prefix('orders')->group(function () {
     Route::post('/add-box-to-cart', [OrderController::class, 'addBoxToOrder']);
     Route::post('/send', [OrderController::class, 'sendOrder']);
 });
-
 
 //box
 Route::apiResource('boxes', BoxController::class)->except('update');

@@ -11,6 +11,7 @@ use App\Models\Quantity;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,11 +26,12 @@ class DatabaseSeeder extends Seeder
         Product::factory(10)->create();
         Box::factory(10)->create();
         Order::factory(10)->create();
-        // Quantity::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'password' => Hash::make('password'),
+            'type' => 'admin',
         ]);
     }
 }
