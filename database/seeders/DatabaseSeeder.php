@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         Brand::factory(10)->create();
         Product::factory(10)->create();
         Box::factory(10)->create();
-        Order::factory(10)->create();
+        // Order::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Test User',

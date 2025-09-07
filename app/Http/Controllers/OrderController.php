@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\SendOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\QuantityResource;
 use App\Models\Box;
@@ -145,12 +146,9 @@ class OrderController extends Controller
         ]);
     }
 
-    public function sendOrder(Request $request)
+    public function sendOrder(SendOrderRequest $request)
     {
-        $request->validate([
-            'address'      => 'required|string|max:255',
-            'delivered_by' => 'required|date|after:today',
-        ]);
+        $request->validated();
 
         $user = Auth::id();
 
@@ -173,7 +171,6 @@ class OrderController extends Controller
 
         $order->update([
             'address'      => $request->address,
-            'delivered_by' => $request->delivered_by,
             'status'       => 'done',
         ]);
 

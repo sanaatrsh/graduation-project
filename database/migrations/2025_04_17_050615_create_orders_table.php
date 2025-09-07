@@ -17,6 +17,11 @@ return new class extends Migration
             $table->date('delivered_by')->nullable();
             $table->float('price')->nullable();
             $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('order_notes')->nullable();
             $table->enum('status', ['pending', 'cancelled', 'done', 'delivered'])->default('pending');
             $table->timestamps();
         });
