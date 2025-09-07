@@ -17,14 +17,41 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => new UserResource($this->whenLoaded('user')),
-            'delivered_by' => $this->delivered_by,
-            'price' => $this->price,
             'address' => $this->address,
             'status' => $this->status,
             'created_at' => $this->created_at,
+            'subtotal' => $this->quantities->sum(function ($quantity) {
+                return ($quantity->product?->price ?? 0) * $quantity->quantity;
+            }),
+
+            'discount' => $this->quantities->sum(function ($quantity) {
+                if ($quantity->product && $quantity->product->offers) {
+                    return $quantity->product->offers->sum(function ($offer) use ($quantity) {
+                        return (($quantity->product->price ?? 0) * $quantity->quantity) * ($offer->discount_percentage / 100);
+                    });
+                }
+                return 0;
+            }),
+
+            'total' => (
+                $this->quantities->sum(function ($quantity) {
+                    return ($quantity->product?->price ?? 0) * $quantity->quantity;
+                })
+            ) - (
+                $this->quantities->sum(function ($quantity) {
+                    if ($quantity->product && $quantity->product->offers) {
+                        return $quantity->product->offers->sum(function ($offer) use ($quantity) {
+                            return (($quantity->product->price ?? 0) * $quantity->quantity) * ($offer->discount_percentage / 100);
+                        });
+                    }
+                    return 0;
+                })
+            ),
+
             'quantities'  => QuantityResource::collection(
                 $this->whenLoaded('quantities', $this->quantities)
             ),
+
         ];
     }
 }
