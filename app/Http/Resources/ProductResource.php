@@ -32,10 +32,11 @@ class ProductResource extends JsonResource
                 });
             }),
 
-
-            'image_urls'  => $this->getMedia('products')->map(function ($media) {
-                return url($media->getUrl());
+            'image_urls' => $this->getMedia('products')->map(function ($media) {
+                return parse_url($media->getUrl(), PHP_URL_PATH);
             }),
+
+
         ];
     }
 }

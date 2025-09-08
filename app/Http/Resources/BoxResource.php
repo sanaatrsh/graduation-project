@@ -20,8 +20,9 @@ class BoxResource extends JsonResource
             'description' => $this->description,
             'event' => $this->event,
             'price' => $this->price,
+
             'image_urls' => $this->getMedia('boxs')->map(function ($media) {
-                return str_replace(url('/'), '', $media->getUrl());
+                return parse_url($media->getUrl(), PHP_URL_PATH);
             }),
         ];
     }
