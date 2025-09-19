@@ -18,9 +18,7 @@ It was developed as a graduation project and received a grade of **96/100**.
 ## 🛠️ Tech Stack  
 - **Framework:** Laravel 12  
 - **Database:** MySQL  
-- **Authentication:** Laravel Sanctum (or Passport if you used it)  
-- **Front-end (Admin Dashboard):** Blade / Vue / React (mention what you actually used)  
-
+- **Authentication:** Laravel Sanctum
 ---
 
 ## 📂 Installation & Setup  
