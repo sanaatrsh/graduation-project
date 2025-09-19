@@ -27,8 +27,7 @@ It was developed as a graduation project and received a grade of **96/100**.
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/sanaatrsh/graduation-project/
    ```
 
 2. Install dependencies:  
@@ -80,7 +79,7 @@ This project was successfully defended as a graduation thesis and received **96/
 ## 👩‍💻 Author  
 **Sana Atrash**  
 - 💼 Backend Developer (Laravel)  
-- 🌐 [LinkedIn](https://linkedin.com/in/your-profile)  
-- 📧 your.email@example.com  
+- 🌐 [LinkedIn](https://sy.linkedin.com/in/sana-atrash)  
+- 📧 sanaatrash09@gamil.com  
 
 ---
