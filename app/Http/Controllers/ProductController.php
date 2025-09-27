@@ -19,7 +19,7 @@ class ProductController extends Controller
             ->when($query, function ($q) use ($query) {
                 $q->where('name', $query);
             })
-            ->latest()
+            // ->latest()
             ->paginate(15);
 
         return ProductResource::collection($products);

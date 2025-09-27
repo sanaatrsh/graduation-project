@@ -9,7 +9,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Category extends Model
 {
-    use InteractsWithMedia, HasFactory;
+    use HasFactory;
     protected $guarded;
     public function products()
     {

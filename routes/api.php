@@ -44,7 +44,7 @@ Route::prefix('products')->group(function () {
 });
 
 //order
-Route::middleware('auth:sanctum')->prefix('orders')->group(function () {
+Route::prefix('orders')->group(function () {
     Route::apiResource('/', OrderController::class)->parameters(['' => 'id'])->except(['show']);
     Route::get('/user', [OrderController::class, 'show']);
     Route::post('/add-product-to-cart', [OrderController::class, 'addProductToOrder']);

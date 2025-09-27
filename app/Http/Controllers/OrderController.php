@@ -33,7 +33,8 @@ class OrderController extends Controller
 
     public function show()
     {
-        $user = Auth::id();
+        // $user = Auth::id();
+        $user = 1;
 
         $order = Order::with(['user', 'quantities.product', 'quantities.box'])
             ->where('user_id', $user)
@@ -75,7 +76,9 @@ class OrderController extends Controller
             'quantity'   => 'required|integer|min:1',
         ]);
 
-        $user = Auth::id();
+        // $user = Auth::id();
+        $user = 1;
+
 
         $order = Order::where('user_id', $user)
             ->where('status', 'pending')
@@ -114,7 +117,9 @@ class OrderController extends Controller
             'quantity'   => 'required|integer|min:1',
         ]);
 
-        $user = Auth::id();
+        // $user = Auth::id();
+        $user = 1;
+
 
         $order = Order::where('user_id', $user)
             ->where('status', 'pending')
@@ -150,7 +155,9 @@ class OrderController extends Controller
     {
         $request->validated();
 
-        $user = Auth::id();
+        // $user = Auth::id();
+        $user = 1;
+
 
         $order = Order::where('user_id', $user)
             ->where('status', 'pending')
