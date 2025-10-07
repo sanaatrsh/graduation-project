@@ -125,6 +125,7 @@
             tzEl.textContent = 'Time zone: ' + Intl.DateTimeFormat().resolvedOptions().timeZone;
         }
 
+
         updateTime();
         setInterval(updateTime, 1000); // update every second
     </script>
