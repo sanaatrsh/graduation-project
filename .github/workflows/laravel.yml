@@ -56,3 +56,34 @@ jobs:
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/${{ github.repository }}/merges \
           -d '{"base":"main","head":"test"}'
+
+  deploy:
+    name: Deploy to Hostinger
+    needs: test-and-merge
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Deploy via SSH to Hostinger
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          script: |
+            cd domains/${{ secrets.HOSTINGER_HOST }}/public_html
+            git pull origin main
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            echo "✅ Deployment completed successfully!"
+            echo "🔗 Visit your site at https://${{ secrets.HOSTINGER_HOST }}"
