@@ -128,7 +128,6 @@
         updateTime();
         setInterval(updateTime, 1000); // update every second
     </script>
-    >>>>>>> test
 </body>
 
 </html>
