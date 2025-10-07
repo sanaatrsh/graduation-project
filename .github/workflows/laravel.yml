@@ -50,12 +50,20 @@ jobs:
 
       - name: Merge test into main
         if: success()
-        run: |
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/${{ github.repository }}/merges \
-          -d '{"base":"main","head":"test"}'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const branch = 'test';
+            const base = 'main';
+            await github.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              base: base,
+              head: branch
+            });
+            console.log(`✅ Merged ${branch} into ${base}`);
+
 
   deploy:
     name: Deploy to Hostinger
@@ -86,4 +94,3 @@ jobs:
             php artisan route:cache
             php artisan view:cache
             echo "✅ Deployment completed successfully!"
-            echo "🔗 Visit your site at https://${{ secrets.HOSTINGER_HOST }}"
