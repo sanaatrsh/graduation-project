@@ -82,7 +82,7 @@ jobs:
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HOSTINGER_PORT }}
           script: |
-            cd domains/${{ secrets.HOSTINGER_HOST }}/public_html
+            cd domains/yellowgreen-lemur-282516.hostingersite.com/public_html
             git pull origin main
             composer install --no-dev --optimize-autoloader
             php artisan migrate --force
